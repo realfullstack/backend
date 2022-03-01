@@ -105,7 +105,6 @@ THIRD_PARTY_APPS = [
     "rest_framework",  # utilities for rest apis
     "rest_framework.authtoken",  # token authentication
     "django_filters",
-    "django_json_widget",
     "cacheops",
 ]
 
