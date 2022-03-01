@@ -109,7 +109,7 @@ THIRD_PARTY_APPS = [
     "cacheops",
 ]
 
-LOCAL_APPS = ["users", "tools"]
+LOCAL_APPS = ["auth", "users", "tools"]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -264,7 +264,6 @@ CORS_ALLOWED_ORIGINS = []
 
 CORS_ALLOW_HEADERS = list(default_headers) + [
     "x-authorization",
-    "x-guest-authorization",
 ]
 
 CACHEOPS_REDIS = env.str("CACHE_URL")
