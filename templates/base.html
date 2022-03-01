@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en-us">
+{% block head %}
+{% include "generic/parts/head.html" %}
+{% endblock head %}
+
+<body">
+
+  {% block header %}
+  {% include "generic/parts/header.html" %}
+  {% endblock header %}
+  <main>
+    {% block main %}
+    <h1>MAIN main</h1>
+    {% endblock main %}
+  </main>
+  {% block footer %}
+  {% include "generic/parts/footer.html" %}
+  {% endblock footer %}
+
+  {% block foot %}
+  {% include "generic/parts/foot.html" %}
+  {% endblock foot %}
+
+</body>
+
+</html>

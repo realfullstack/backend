@@ -1,0 +1,29 @@
+.vscode
+.env
+.local
+.coverage
+coverage.xml
+
+/release/
+/media/
+
+### Python ###
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+#*.mo
+
+coverage_html_report
+
+### Django ###
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+
+.env
+db.sqlite3
+
+docker-compose.override.yml

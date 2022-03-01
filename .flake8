@@ -1,0 +1,16 @@
+[flake8]
+ignore = DJ01,DJ08,W503
+extend-ignore = E203, W503
+exclude =
+    .git,
+    .venv,
+    doc,
+    Jenkins,
+    __pycache__,
+    .tox,
+    **/migrations/**
+
+max-line-length = 120
+max-complexity = 12
+
+mypy_config = mypy.ini
