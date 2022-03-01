@@ -5,8 +5,8 @@ Build is done via github actions. Locally, you can test the release builds as fo
 
 ```bash
 docker buildx build \
-    --tag builder \
-    --target builder \
+    --tag base \
+    --target base \
     --file ./Build/release/backend/Dockerfile .
 
 docker buildx build \
