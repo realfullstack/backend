@@ -3,6 +3,7 @@
 .local
 .coverage
 coverage.xml
+Makefile
 
 /release/
 /media/
