@@ -17,7 +17,7 @@ Werkzeug = "==1.0.1"
 drf-yasg = "==1.20.0"
 freezegun = "==1.0.0"
 jupyter = "==1.0.0"
-ipython = "==7.20.0"
+ipython = "==8.1.1"
 ipywidgets = "==7.6.3"
 jupyter-contrib-nbextensions = "==0.5.1"
 
