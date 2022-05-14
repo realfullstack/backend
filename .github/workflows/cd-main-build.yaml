@@ -78,7 +78,7 @@ jobs:
           context: .
           file: ./Build/release/backend/Dockerfile
           target: base
-          push: false
+          push: true
           tags: base
           cache-from: ghcr.io/${{ github.repository }}/base_cache
           cache-to: type=inline
