@@ -81,7 +81,7 @@ jobs:
           push: true
           tags: base
           cache-from: ghcr.io/${{ github.repository }}/base_cache
-          cache-to: type=inline
+          cache-to: ghcr.io/${{ github.repository }}/base_cache
       - name: Build and push main_dev
         id: build_push_main_dev
         uses: docker/build-push-action@v2.2.2
