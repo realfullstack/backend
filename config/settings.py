@@ -108,7 +108,11 @@ THIRD_PARTY_APPS = [
     "cacheops",
 ]
 
-LOCAL_APPS = ["auth", "users", "tools"]
+LOCAL_APPS = [
+    "auth",
+    "users",
+    "tools",
+]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
