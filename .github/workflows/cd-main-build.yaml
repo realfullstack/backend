@@ -79,9 +79,9 @@ jobs:
           file: ./Build/release/backend/Dockerfile
           target: base
           push: false
-          tags: ghcr.io/${{ github.repository }}/base_dev:latest
-          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}/base_dev:buildcache
-          cache-to: type=registry,ref=ghcr.io/${{ github.repository }}/base_dev:buildcache
+          tags: ghcr.io/${{ github.repository }}/base_cache:latest
+          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}/base_cache:buildcache
+          cache-to: type=registry,ref=ghcr.io/${{ github.repository }}/base_cache:buildcache,mode=max
       # - name: Build and push main_dev
       #   id: build_push_main_dev
       #   uses: docker/build-push-action@v2.2.2
