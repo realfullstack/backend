@@ -35,32 +35,33 @@ RUN pipenv install --system --dev --deploy --clear\
 # ### base DONE
 
 
-# ### main_dev
-# FROM base as main_dev
+### main_dev
+FROM base as main_dev
 
-# ARG BUILD_NUMBER
-# ARG BUILD_DATE
+# USER django
 
-# ENV BUILD_NUMBER=$BUILD_NUMBER
-# ENV BUILD_DATE=$BUILD_DATE
-# ENV DJANGO_SETTINGS_MODULE=config.settings
+ARG BUILD_NUMBER
+ARG BUILD_DATE
 
-# ENV PYTHONDONTWRITEBYTECODE 1
-# ENV PYTHONUNBUFFERED 1
-# ENV PYTHONPATH="/app:$PYTHONPATH"
+ENV BUILD_NUMBER=$BUILD_NUMBER
+ENV BUILD_DATE=$BUILD_DATE
+ENV DJANGO_SETTINGS_MODULE=config.settings
 
-# WORKDIR /app
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+ENV PYTHONPATH="/app:$PYTHONPATH"
 
-# COPY . /app
+WORKDIR /app
 
-# RUN python manage/static_dev.py collectstatic --no-input
+COPY . /app
 
-# # USER django
+RUN python manage/static_dev.py collectstatic --no-input
 
-# ### main_dev DONE
 
-# ### nginx
-# FROM nginx:1.19.6-alpine as nginx
-# COPY ./Build/release/backend/conf/nginx.conf /etc/nginx/conf.d/default.conf
-# COPY --from=main_dev /app/release/static /app/static
-# ### nginx DONE
+### main_dev DONE
+
+### nginx
+FROM nginx:1.19.6-alpine as nginx
+COPY ./Build/release/backend/conf/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=main_dev /app/release/static /app/static
+### nginx DONE
