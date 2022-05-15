@@ -121,45 +121,45 @@ jobs:
                 BUILD_NUMBER=${{ env.DOCKER_SHA_TAG }}
                 BUILD_DATE=${{ env.BUILD_DATE }}
 
-  # deploy:
-  #   name: Deploy
-  #   needs: build
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Set BRANCH_NAME (feature)
-  #       shell: bash
-  #       run: echo "CODE_BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/} | tr / -)" >> $GITHUB_ENV
-  #     - name: Check out code
-  #       uses: actions/checkout@v2
-  #       with:
-  #         repository: realfullstack/backend-infra
-  #         ref: master
-  #         token: ${{ secrets.GITHUBREPO_TOKEN }}
-  #     - name: Setup Kustomize
-  #       uses: imranismail/setup-kustomize@v1
-  #       with:
-  #         kustomize-version: "3.8.5"
-  #     - name: Update Kubernetes resources (feature branches)
-  #       if: startsWith(needs.build.outputs.code_env_name, 'feature')
-  #       run: |
-  #         ./bin/create-feature-deployment.sh ${{ env.CODE_BRANCH_NAME }} ${{needs.build.outputs.docker_sha_tag}}
-  #         git add argocd-feature/
-  #         git add kustomize-feature/
-  #     - name: Update Kubernetes resources (main branches)
-  #       if: startsWith(needs.build.outputs.code_env_name, 'feature') != true
-  #       run: |
-  #         cd kustomize/overlays/${{needs.build.outputs.code_env_name}}
-  #         kustomize edit set image backend_main=ghcr.io/${{ github.repository }}/main_dev:${{needs.build.outputs.docker_sha_tag}}
-  #         kustomize edit set image backend_nginx=ghcr.io/${{ github.repository }}/nginx:${{needs.build.outputs.docker_sha_tag}}
-  #         cat kustomization.yaml
-  #     - name: Commit files
-  #       run: |
-  #         git config --local user.email "${{ secrets.GITHUBPKG_EMAIL }}"
-  #         git config --local user.name "${{ secrets.GITHUBPKG_NAME }}"
-  #         git commit -am "Bump deployment"
-  #     - name: Push changes
-  #       uses: ad-m/github-push-action@v0.6.0
-  #       with:
-  #         repository: realfullstack/backend-infra
-  #         github_token: ${{ secrets.GITHUBREPO_TOKEN }}
-  #         branch: master
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set BRANCH_NAME (feature)
+        shell: bash
+        run: echo "CODE_BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/} | tr / -)" >> $GITHUB_ENV
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          repository: realfullstack/backend-infra
+          ref: master
+          token: ${{ secrets.GITHUBREPO_TOKEN }}
+      - name: Setup Kustomize
+        uses: imranismail/setup-kustomize@v1
+        with:
+          kustomize-version: "3.8.5"
+      - name: Update Kubernetes resources (feature branches)
+        if: startsWith(needs.build.outputs.code_env_name, 'feature')
+        run: |
+          ./bin/create-feature-deployment.sh ${{ env.CODE_BRANCH_NAME }} ${{needs.build.outputs.docker_sha_tag}}
+          git add argocd-feature/
+          git add kustomize-feature/
+      - name: Update Kubernetes resources (main branches)
+        if: startsWith(needs.build.outputs.code_env_name, 'feature') != true
+        run: |
+          cd kustomize/overlays/${{needs.build.outputs.code_env_name}}
+          kustomize edit set image backend_main=ghcr.io/${{ github.repository }}/main_dev:${{needs.build.outputs.docker_sha_tag}}
+          kustomize edit set image backend_nginx=ghcr.io/${{ github.repository }}/nginx:${{needs.build.outputs.docker_sha_tag}}
+          cat kustomization.yaml
+      - name: Commit files
+        run: |
+          git config --local user.email "${{ secrets.GITHUBPKG_EMAIL }}"
+          git config --local user.name "${{ secrets.GITHUBPKG_NAME }}"
+          git commit -am "Bump deployment"
+      - name: Push changes
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          repository: realfullstack/backend-infra
+          github_token: ${{ secrets.GITHUBREPO_TOKEN }}
+          branch: master
