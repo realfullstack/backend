@@ -2,42 +2,41 @@
 # FROM python:3.8.7-slim-buster as base
 FROM python@sha256:ef1eb4df15396b7d660fe99f1a8ad6b54812420e243fc13b22733218fd03b1b1 as base
 
-# RUN apt-get update && apt-get install -y \
-#     bash \
-#     wait-for-it \
-#     make \
-#     curl \
-#     gettext \
-#     git \
-#     && rm -rf /var/lib/apt/lists/*
-
-# RUN addgroup django \
-#     && mkdir /app \
-#     && useradd -g django --home /app django \
-#     && chown django:django /app
+RUN apt-get update && apt-get install -y \
+    bash \
+    wait-for-it \
+    make \
+    curl \
+    gettext \
+    git \
+    && rm -rf /var/lib/apt/lists/*
 
 
-# ENV PYTHONDONTWRITEBYTECODE 1
-# ENV PYTHONUNBUFFERED 1
-# ENV PIPENV_MAX_RETRIES=2
-# ENV PIPENV_KEEP_OUTDATED=true
-# ENV PIPENV_CACHE_DIR=/cache/pipenv
-# ENV PIP_CACHE_DIR=/cache/pip
+RUN addgroup django \
+    && mkdir /app \
+    && useradd -g django --home /app django \
+    && chown django:django /app
 
-# RUN pip install pipenv==2020.11.15 --no-cache-dir
 
-# FROM base as main_packages
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+ENV PIPENV_MAX_RETRIES=2
+ENV PIPENV_KEEP_OUTDATED=true
+ENV PIPENV_CACHE_DIR=/cache/pipenv
+ENV PIP_CACHE_DIR=/cache/pip
 
-# COPY ./Pipfile* /
+RUN pip install pipenv==2020.11.15 --no-cache-dir
 
-# RUN pipenv install --system --dev --deploy --clear\
-#     && pip uninstall pipenv -y \
-#     && rm -rf /cache
+COPY ./Pipfile* /
+
+RUN pipenv install --system --dev --deploy --clear\
+    && pip uninstall pipenv -y \
+    && rm -rf /cache
 # ### base DONE
 
 
 # ### main_dev
-# FROM main_packages as main_dev
+# FROM base as main_dev
 
 # ARG BUILD_NUMBER
 # ARG BUILD_DATE
