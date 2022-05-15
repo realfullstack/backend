@@ -156,7 +156,7 @@ jobs:
         run: |
           git config --local user.email "${{ secrets.GITHUBPKG_EMAIL }}"
           git config --local user.name "${{ secrets.GITHUBPKG_NAME }}"
-          git commit -am "Bump deployment"
+          git commit -am "Bump deployment ${{ github.ref }}"
       - name: Push changes
         uses: ad-m/github-push-action@v0.6.0
         with:
