@@ -83,7 +83,7 @@ jobs:
           tag-sha: true
       - name: Build base
         id: build_base
-        uses: docker/build-push-action@v2.2.2
+        uses: docker/build-push-action@v2.10.0
         with:
           context: .
           file: ./Build/release/backend/Dockerfile
@@ -92,31 +92,34 @@ jobs:
           # tags: ghcr.io/${{ github.repository }}/main_dev:buildcache
           cache-from: type=registry,ref=ghcr.io/${{ github.repository }}/main_dev:buildcache
           cache-to: type=registry,ref=ghcr.io/${{ github.repository }}/main_dev:buildcache,mode=max
-      # - name: Build and push main_dev
-      #   id: build_push_main_dev
-      #   uses: docker/build-push-action@v2.2.2
-      #   with:
-      #     context: .
-      #     file: ./Build/release/backend/Dockerfile
-      #     target: main_dev
-      #     push: true
-      #     tags: ${{ steps.docker_meta_main_dev.outputs.tags }}
-      #     labels: ${{ steps.docker_meta_main_dev.outputs.labels }}
-      #     cache-from: ghcr.io/${{ github.repository }}/base_cache
-      #     build-args: |
-      #       BUILD_NUMBER=${{ env.DOCKER_SHA_TAG }}
-      #       BUILD_DATE=${{ env.BUILD_DATE }}
+      - name: Build and push main_dev
+        id: build_push_main_dev
+        uses: docker/build-push-action@v2.10.0
+        with:
+          context: .
+          file: ./Build/release/backend/Dockerfile
+          target: main_dev
+          push: true
+          tags: ${{ steps.docker_meta_main_dev.outputs.tags }}
+          labels: ${{ steps.docker_meta_main_dev.outputs.labels }}
+          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}/main_dev:buildcache
+          build-args: |
+            BUILD_NUMBER=${{ env.DOCKER_SHA_TAG }}
+            BUILD_DATE=${{ env.BUILD_DATE }}
       # - name: Build and push nginx
       #   id: build_push_nginx
-      #   uses: docker/build-push-action@v2.2.2
+      #   uses: docker/build-push-action@v2.10.0
       #   with:
       #     context: .
       #     file: ./Build/release/backend/Dockerfile
       #     target: nginx
       #     push: true
-      #     cache-from: ghcr.io/${{ github.repository }}/base_cache
+      #     cache-from: type=registry,ref=ghcr.io/${{ github.repository }}/main_dev:buildcache
       #     tags: ${{ steps.docker_meta_nginx.outputs.tags }}
       #     labels: ${{ steps.docker_meta_nginx.outputs.labels }}
+      # build-args: |
+      #       BUILD_NUMBER=${{ env.DOCKER_SHA_TAG }}
+      #       BUILD_DATE=${{ env.BUILD_DATE }}
 
   # deploy:
   #   name: Deploy
