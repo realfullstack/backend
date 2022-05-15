@@ -103,7 +103,6 @@ jobs:
           tags: ${{ steps.docker_meta_main_dev.outputs.tags }}
           labels: ${{ steps.docker_meta_main_dev.outputs.labels }}
           cache-from: type=registry,ref=ghcr.io/${{ github.repository }}/main_dev:buildcache
-          cache-to: type=inline
           build-args: |
             BUILD_NUMBER=${{ env.DOCKER_SHA_TAG }}
             BUILD_DATE=${{ env.BUILD_DATE }}
@@ -115,7 +114,7 @@ jobs:
           file: ./Build/release/backend/Dockerfile
           target: nginx
           push: true
-          cache-from: type=inline
+          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}/main_dev:buildcache
           tags: ${{ steps.docker_meta_nginx.outputs.tags }}
           labels: ${{ steps.docker_meta_nginx.outputs.labels }}
           build-args: |
