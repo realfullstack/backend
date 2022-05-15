@@ -51,6 +51,16 @@ jobs:
           registry: ghcr.io
           username: ${{ secrets.GITHUBPKG_USERNAME }}
           password: ${{ secrets.GITHUBPKG_TOKEN }}
+      - name: Docker GitHub meta base
+        id: docker_meta_base
+        uses: crazy-max/ghaction-docker-meta@v1.11.0
+        with:
+          images: ghcr.io/${{ github.repository }}/base
+          label-custom: |
+            org.opencontainers.image.run_id=${{ github.run_id }}
+            org.opencontainers.image.workflow=${{ github.workflow }}
+            org.opencontainers.image.run_number=${{ github.run_number }}
+          tag-sha: true
       - name: Docker GitHub meta main_dev
         id: docker_meta_main_dev
         uses: crazy-max/ghaction-docker-meta@v1.11.0
@@ -78,10 +88,10 @@ jobs:
           context: .
           file: ./Build/release/backend/Dockerfile
           target: base
-          push: true
-          tags: ghcr.io/${{ github.repository }}/base_cache:latest
-          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}/base_cache:buildcache
-          cache-to: type=registry,ref=ghcr.io/${{ github.repository }}/base_cache:buildcache,mode=max
+          # push: true
+          # tags: ghcr.io/${{ github.repository }}/main_dev:buildcache
+          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}/main_dev:buildcache
+          cache-to: type=registry,ref=ghcr.io/${{ github.repository }}/main_dev:buildcache,mode=max
       # - name: Build and push main_dev
       #   id: build_push_main_dev
       #   uses: docker/build-push-action@v2.2.2
