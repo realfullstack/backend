@@ -91,7 +91,9 @@ jobs:
           # push: true
           # tags: ghcr.io/${{ github.repository }}/main_dev:buildcache
           cache-from: type=registry,ref=ghcr.io/${{ github.repository }}/main_dev:buildcache
-          cache-to: type=registry,ref=ghcr.io/${{ github.repository }}/main_dev:buildcache,mode=max
+          cache-to: |
+            type=registry,ref=ghcr.io/${{ github.repository }}/main_dev:buildcache,mode=max
+            type=inline
       - name: Build and push main_dev
         id: build_push_main_dev
         uses: docker/build-push-action@v2.10.0
@@ -102,7 +104,9 @@ jobs:
           push: true
           tags: ${{ steps.docker_meta_main_dev.outputs.tags }}
           labels: ${{ steps.docker_meta_main_dev.outputs.labels }}
-          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}/main_dev:buildcache
+          cache-from: |
+            type=registry,ref=ghcr.io/${{ github.repository }}/main_dev:buildcache
+            type=inline
           build-args: |
             BUILD_NUMBER=${{ env.DOCKER_SHA_TAG }}
             BUILD_DATE=${{ env.BUILD_DATE }}
